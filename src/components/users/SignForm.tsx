@@ -1,13 +1,14 @@
 import { Form, Input, Button, Checkbox, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
-const { Text, Link } = Typography;
+import Link from 'next/link';
+const { Text } = Typography;
 interface SignFormProps {
   pageType: string;
 }
 const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
   const tailLayout = {
-    wrapperCol: { offset: 8, span: 6 },
+    wrapperCol: { offset: 9, span: 6 }
   };
 
   const onFinish = (values: { password: string; cfpassword: string }) => {
@@ -16,7 +17,10 @@ const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
 
   return (
     <>
-      <div className='text-gray-500 text-lg'>{pageType === 'signin' ? 'Sign In' : 'Sign Up'}</div>
+      <div className='text-gray-500 text-lg text-center p-10 pr-10'>
+        {pageType === 'signin' ? 'Sign In' : 'Sign Up'}
+      </div>
+
       <Form
         {...tailLayout}
         name='normal_login'
@@ -40,7 +44,7 @@ const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
         >
           <Input.Password
             placeholder='Password'
-            prefix={<LockOutlined className='site-form-item-icon pt-3' />}
+            prefix={<LockOutlined className='site-form-item-icon' />}
           />
         </Form.Item>
         <Form.Item style={{ marginTop: '0px' }}>
@@ -50,8 +54,7 @@ const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
           <Form.Item name='remember' valuePropName='checked' noStyle>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
-          <Button type='link'>Forgot password</Button>
-          {/* <Link href='/forget-password'>Forgot password</Link> */}
+          <Link href='/'>Forgot password</Link>
         </Form.Item>
         <Form.Item>
           <div className='flex flex-row'>
@@ -60,12 +63,12 @@ const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
               htmlType='submit'
               className='login-form-button'
             >
-              {pageType === 'signin'? 'Login' : 'SignUp'}
+              {pageType === 'signin' ? 'Login' : 'SignUp'}
             </Button>
             <div className='pl-5 pt-1'>
               {pageType === 'signin' ? (
                 <>
-                  Don't have an account yet?  <Link href='/signup'>Register now!</Link>
+                  Don't have an account yet? <Link href='/signup'>Register now!</Link>
                 </>
               ) : (
                 <>

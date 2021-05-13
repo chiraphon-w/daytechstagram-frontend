@@ -7,25 +7,25 @@ import {
   Menu,
   Breadcrumb,
 } from 'antd';
+import Link from 'next/link';
+import { ReactNode } from 'react';
 
 const { Header, Content, Footer } = Layout;
-const { Title, Link } = Typography;
+const { Title } = Typography;
 interface MainLayoutProps {
-  children: JSX.Element;
+  children: JSX.Element & ReactNode;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <>
       <Layout className='layout'>
-        <Header></Header>
+        <Menu theme='light' mode='horizontal' defaultSelectedKeys={['2']}>
+          <Menu.Item key='1'>Home</Menu.Item>
+          <Menu.Item key='2'>User</Menu.Item>
+        </Menu>
+
         <Content style={{ padding: '0 50px' }}>
-          <button className='text-blue-500'><Link href='/'>Home</Link></button> / 
-          <button className='text-blue-500'><Link href='/signin'>SignIn</Link></button>
-          {/* <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item><Link href='/'>Home</Link></Breadcrumb.Item>
-            <Breadcrumb.Item><Link href='/signin'>SignIn</Link></Breadcrumb.Item>
-          </Breadcrumb> */}
           <div className='site-layout-content'>{children}</div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

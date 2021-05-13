@@ -6,10 +6,10 @@ import { atom } from 'recoil'; //useState
 //   default: [],
 // });
 
-// export const editState = atom({
-//   key: 'edit',
-//   default: false,
-// });
+export const createPostState = atom({
+  key: 'createPost',
+  default: false,
+});
 
 // export const signFormTypeState = atom<string>({
 //   key: 'signFormType',

@@ -9,8 +9,9 @@ import {
 } from 'antd';
 
 import Head from 'next/head';
-import SignForm from '@/components/users/SignForm';
-
+import PostList from '@/components/posts/PostList';
+import { useRecoilState } from 'recoil';
+import { createPostState } from '@/components/recoil/atom';
 
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
           <title>Daytech Stagram</title>
         </Head>
       </div>
+   
     </>
   );
 }
