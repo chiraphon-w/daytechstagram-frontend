@@ -1,14 +1,26 @@
-import { Button, DatePicker, Typography, version } from 'antd';
-const { Title } = Typography;
+import {
+  Button,
+  DatePicker,
+  Typography,
+  version,
+  Layout,
+  Menu,
+  Breadcrumb,
+} from 'antd';
+
+import Head from 'next/head';
+import SignForm from '@/components/users/SignForm';
+
+
 
 export default function Home() {
   return (
     <>
-      <Title level={2}>antd version: {version}</Title>
-      <DatePicker />
-      <Button type='primary' className='ml-2'>
-        Primary Button
-      </Button>
+      <div>
+        <Head>
+          <title>Daytech Stagram</title>
+        </Head>
+      </div>
     </>
   );
 }
