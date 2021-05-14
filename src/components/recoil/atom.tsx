@@ -4,7 +4,7 @@ import { atom } from 'recoil'; //useState
 
 
 export const createPostState = atom({
-  key: 'createPost',
+  key: 'createPostST',
   default: false,
 });
 

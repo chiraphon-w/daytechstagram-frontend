@@ -22,12 +22,11 @@ const create = () => {
       <Home />
       <div className='pt-5'>
         <Button
-          type='primary'
-          shape='circle'
+          type='dashed'
           style={{ float: 'right' }}
           onClick={() => setModalActivePost(true)}
         >
-          +
+          New Post
         </Button>
       </div>
       <FormPost />
@@ -36,3 +35,4 @@ const create = () => {
 };
 
 export default create;
+

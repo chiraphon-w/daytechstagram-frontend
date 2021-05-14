@@ -19,7 +19,7 @@ export default function Home() {
           <title>Daytech Stagram</title>
         </Head>
       </div>
-   
+
     </>
   );
 }

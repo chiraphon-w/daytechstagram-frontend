@@ -8,7 +8,7 @@ interface FormLoginProps {
 }
 const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
   const tailLayout = {
-    wrapperCol: { offset: 9, span: 6 }
+    wrapperCol: { offset: 9, span: 7 }
   };
 
   const onFinish = (values: { password: string; cfpassword: string }) => {
@@ -80,6 +80,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
           </div>
         </Form.Item>
       </Form>
+      
     </>
   );
 };

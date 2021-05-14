@@ -8,7 +8,7 @@ import MainLayout from '@/components/layouts/MainLayout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className='min-h-screen flex'>
+    <div>
     <MainLayout>
       <RecoilRoot>
         <Component {...pageProps} />

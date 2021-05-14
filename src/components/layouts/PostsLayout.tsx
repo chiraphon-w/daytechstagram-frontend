@@ -16,12 +16,11 @@ const PostsLayout = () => {
     <div>
       <div className='pt-5'>
         <Button
-          type='primary'
-          shape='circle'
+         type='dashed'
           style={{ float: 'right' }}
           onClick={() => setModalActivePost(true)}
         >
-          +
+          New Post
         </Button>
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
           <h1 className='text-lg font-bold text-gray-400'>Posts</h1>

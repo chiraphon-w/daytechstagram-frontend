@@ -9,6 +9,7 @@ import ImgCrop from 'antd-img-crop';
 import Link from 'next/link';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import CardPost from '@/components/cards/CardPost';
 
 const { TextArea } = Input;
 
@@ -23,7 +24,6 @@ const FormPost = ({}) => {
   //   router.push("/posts", null, { shallow: true });
 
   const onFinish = (values: { desc: string; image: any }) => {
-    // values.image = fileList;
     console.log('Success:', values);
     setModalActivePost(false);
     return route.push('/posts');
@@ -36,6 +36,9 @@ const FormPost = ({}) => {
 
   return (
     <>
+      <div className='flex justify-center'>
+        <CardPost />
+      </div>
       <Modal
         title='Create Post'
         visible={modalActivePost}
@@ -52,14 +55,18 @@ const FormPost = ({}) => {
             name='descPost'
             rules={[{ required: true, message: 'Please Enter Descripton' }]}
           >
-            <Input.TextArea
-              style={{ margin: '24px 0' }}
+            <TextArea
               placeholder="What's happening?"
+              autoSize
+              className='my-2'
             />
           </Form.Item>
-          <Form.Item name='imagePost'>
+          <Form.Item
+            name='imagePost'
+            rules={[{ required: true, message: 'Please Upload a Photo' }]}
+          >
             <Upload listType='picture' maxCount={1}>
-              <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
+              <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
           </Form.Item>
           <Form.Item>

@@ -1,15 +1,12 @@
-import {
-    Button,
-    Divider
-  } from 'antd';
-  import React, { useState } from 'react';
-  import Head from 'next/head';
-  import Home from '../index';
-  import { useRecoilState } from 'recoil';
-  import { createPostState } from '@/components/recoil/atom';
-  import CardPost from '@/components/cards/CardPost';
-  import FormPost from '@/components/forms/FormPost';
-  import Link from 'next/link';
+import { Button, Divider } from 'antd';
+import React, { useState } from 'react';
+import Head from 'next/head';
+import Home from '../index';
+import { useRecoilState } from 'recoil';
+import { createPostState } from '@/components/recoil/atom';
+import CardPost from '@/components/cards/CardPost';
+import FormPost from '@/components/forms/FormPost';
+import Link from 'next/link';
 
 interface Props {}
 
@@ -21,29 +18,34 @@ const posts = () => {
     setModalPostContent(<Link href='/'></Link>);
   };
   return (
-    <div>
+    <>
+      <div>
+        <Head>
+          <title>Daytech Stagram</title>
+        </Head>
+      </div>
       <div className='pt-5'>
-        <Button
-          type='primary'
-          shape='circle'
-          style={{ float: 'right' }}
-          onClick={() => {
-            setModalActivePost(true);
-          }}
-        >
-          <Link href='/posts/create'>+</Link>
-        </Button>
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
-          <h1 className='text-lg font-bold text-gray-400'>
+          {/* <h1 className='text-lg font-bold text-red-400'>
             {' '}
             <Divider>Posts</Divider>
-          </h1>
-          <div className='flex p-5 justify-center'>
-            <CardPost />
+          </h1> */}
+          <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
+            <Button
+              type='dashed'
+              onClick={() => {
+                setModalActivePost(true);
+              }}
+            >
+              <Link href='/posts/create'>New Post</Link>
+            </Button>
           </div>
         </div>
       </div>
-    </div>
+      <div className='flex justify-center'>
+        <CardPost />
+      </div>
+    </>
   );
 };
 
