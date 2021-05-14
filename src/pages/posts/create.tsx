@@ -21,13 +21,11 @@ const create = () => {
     <div>
       <Home />
       <div className='pt-5'>
-        <Button
-          type='dashed'
-          style={{ float: 'right' }}
-          onClick={() => setModalActivePost(true)}
-        >
-          New Post
-        </Button>
+        <div className='w-full max-w-4xl mx-auto p-5 text-center'>
+          <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
+            <Button type='dashed'>New Post</Button>
+          </div>
+        </div>
       </div>
       <FormPost />
     </div>
@@ -35,4 +33,3 @@ const create = () => {
 };
 
 export default create;
-

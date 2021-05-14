@@ -1,30 +1,45 @@
 import React from 'react';
 import { Form, Input, Button, Image, Typography, Card } from 'antd';
+import {
+    EditOutlined,
+    DeleteOutlined,
+    CheckSquareOutlined,
+  } from '@ant-design/icons';
 import FormComment from '@/components/forms/FormComment';
 const { Meta } = Card;
 interface Props {}
 
-const CardPost = (props: Props) => {
+const CardComment = (props: Props) => {
   return (
     <>
-      <div>
+      <div className='items-center'>
         <Card
+          title={<p className='text-xs text-gray-500'>updated on 06:43 pm</p>}
           hoverable
-          style={{ width: 500 }}
-          className='m-5'
-          cover={
-            <img
-              alt='example'
-              src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'
-            />
-          }
+          style={{ width: 450 }}
+          className='my-4'
+          extra={[
+            <EditOutlined
+              key='editPost'
+              onClick={() => {
+                alert('editPost');
+              }}
+              className='pr-3'
+            />,
+            <DeleteOutlined
+              key='deletePost'
+              onClick={() => {
+                alert('deletePost');
+              }}
+            />,
+          ]}
         >
-          <Meta className='pb-3' title='Europe Street beat' description='www.instagram.com' />
-          <FormComment />
+          <Meta className='pb-3' title='User 2' />
+          <p className='text-gray-500'>Wowww!!! SHE'S SO HOTTT!!!🔥🔥🔥🔥</p>
         </Card>
       </div>
     </>
   );
 };
 
-export default CardPost;
+export default CardComment;

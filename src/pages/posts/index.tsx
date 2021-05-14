@@ -26,10 +26,6 @@ const posts = () => {
       </div>
       <div className='pt-5'>
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
-          {/* <h1 className='text-lg font-bold text-red-400'>
-            {' '}
-            <Divider>Posts</Divider>
-          </h1> */}
           <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
             <Button
               type='dashed'

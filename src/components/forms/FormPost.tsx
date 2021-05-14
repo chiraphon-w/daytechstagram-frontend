@@ -70,9 +70,11 @@ const FormPost = ({}) => {
             </Upload>
           </Form.Item>
           <Form.Item>
-            <Button type='dashed' htmlType='submit'>
-              Post
-            </Button>
+            <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
+              <Button type='dashed' htmlType='submit'>
+                Post
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Modal>
