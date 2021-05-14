@@ -10,11 +10,11 @@ import {
 import React from 'react';
 import Head from 'next/head';
 import CreatePostForm from '@/components/posts/CreatePostForm';
-import Home from './index';
+import Home from '../index';
 import { useRecoilState } from 'recoil';
 import { createPostState } from '@/components/recoil/atom';
 
-const createpost = () => {
+const create = () => {
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
 
   return (
@@ -35,4 +35,4 @@ const createpost = () => {
   );
 };
 
-export default createpost;
+export default create;

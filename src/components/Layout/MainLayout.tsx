@@ -21,8 +21,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <>
       <Layout className='layout'>
         <Menu theme='light' mode='horizontal' defaultSelectedKeys={['2']}>
-          <Menu.Item key='1'>Home</Menu.Item>
-          <Menu.Item key='2'>User</Menu.Item>
+          <Menu.Item key='1'><Link href='/posts'>Home</Link></Menu.Item>
+          <Menu.Item key='2'><Link href='/signin'>Logout</Link></Menu.Item>
         </Menu>
 
         <Content style={{ padding: '0 50px' }}>

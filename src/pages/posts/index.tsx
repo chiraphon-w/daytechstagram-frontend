@@ -1,15 +1,18 @@
 import {
-  Button,
-  Divider
-} from 'antd';
-import React, { useState } from 'react';
-import Head from 'next/head';
-import Home from './index';
-import { useRecoilState } from 'recoil';
-import { createPostState } from '@/components/recoil/atom';
-import PostCard from '@/components/posts/PostCard';
-import CreatePostForm from '@/components/posts/CreatePostForm';
-import Link from 'next/link';
+    Button,
+    Divider
+  } from 'antd';
+  import React, { useState } from 'react';
+  import Head from 'next/head';
+  import Home from '../index';
+  import { useRecoilState } from 'recoil';
+  import { createPostState } from '@/components/recoil/atom';
+  import PostCard from '@/components/posts/PostCard';
+  import CreatePostForm from '@/components/posts/CreatePostForm';
+  import Link from 'next/link';
+
+interface Props {}
+
 const posts = () => {
   const [modalPostContent, setModalPostContent] = useState<JSX.Element>();
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
@@ -28,10 +31,13 @@ const posts = () => {
             setModalActivePost(true);
           }}
         >
-          <Link href='/createpost'>+</Link>
+          <Link href='/posts/create'>+</Link>
         </Button>
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
-          <h1 className='text-lg font-bold text-gray-400'> <Divider>Posts</Divider></h1>
+          <h1 className='text-lg font-bold text-gray-400'>
+            {' '}
+            <Divider>Posts</Divider>
+          </h1>
           <div className='flex p-5 justify-center'>
             <PostCard />
           </div>

@@ -6,44 +6,33 @@ import { useRecoilState } from 'recoil';
 import { createPostState } from '../recoil/atom';
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
+import Link from 'next/link';
+import { UploadOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
+
 const { TextArea } = Input;
 
 const CreatePostForm = ({}) => {
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
+  const route = useRouter();
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 24 },
   };
 
+//   router.push("/posts", null, { shallow: true });
+// import { useRouter } from "next/router";
+
   const onFinish = (values: { desc: string; image: any }) => {
-    values.image = fileList;
+    // values.image = fileList;
     console.log('Success:', values);
-    setModalActivePost(false)
+    setModalActivePost(false);
+
+    return route.push('/posts');
   };
 
   const handleCancel = () => {
     setModalActivePost(false);
-  };
-
-  const [fileList, setFileList] = useState([]);
-  //   console.log(fileList);
-  const onChange = ({ fileList: newFileList }: any) => {
-    setFileList(newFileList);
-  };
-
-  const onPreview = async ({ file }: any) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow: Window | null = window.open(src);
-    imgWindow.document.write(image.outerHTML);
   };
 
   return (
@@ -69,18 +58,10 @@ const CreatePostForm = ({}) => {
               placeholder="What's happening?"
             />
           </Form.Item>
-          <Form.Item>
-            <ImgCrop rotate>
-              <Upload
-                action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                listType='picture-card'
-                fileList={fileList}
-                onChange={onChange}
-                onPreview={onPreview}
-              >
-                {fileList.length < 1 && '+ Upload'}
-              </Upload>
-            </ImgCrop>
+          <Form.Item name='imagePost'>
+            <Upload listType='picture' maxCount={1}>
+              <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
+            </Upload>
           </Form.Item>
           <Form.Item>
             <Button type='dashed' htmlType='submit'>

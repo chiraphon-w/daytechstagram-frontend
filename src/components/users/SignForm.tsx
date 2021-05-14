@@ -62,8 +62,9 @@ const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
               type='primary'
               htmlType='submit'
               className='login-form-button'
+              onClick={() => {}}
             >
-              {pageType === 'signin' ? 'Login' : 'SignUp'}
+              {pageType === 'signin' ? <Link href='/posts'>Login</Link> : <Link href='/posts'>SignUp</Link>}
             </Button>
             <div className='pl-5 pt-1'>
               {pageType === 'signin' ? (
