@@ -7,8 +7,8 @@ import Head from 'next/head';
 // import Home from './index';
 import { useRecoilState } from 'recoil';
 import { createPostState } from '@/components/recoil/atom';
-import PostCard from '@/components/posts/PostCard';
-import CreatePostForm from '@/components/posts/CreatePostForm';
+import CardPost from '@/components/cards/CardPost';
+import FormPost from '@/components/forms/FormPost';
 import Link from 'next/link';
 const posts = () => {
   const [modalPostContent, setModalPostContent] = useState<JSX.Element>();
@@ -33,7 +33,7 @@ const posts = () => {
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
           <h1 className='text-lg font-bold text-gray-400'> <Divider>Posts</Divider></h1>
           <div className='flex p-5 justify-center'>
-            <PostCard />
+            <CardPost />
           </div>
         </div>
       </div>

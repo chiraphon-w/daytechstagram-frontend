@@ -4,12 +4,12 @@ import {
 } from 'antd';
 
 import React from 'react';
-import PostCard from '@/components/posts/PostCard';
+import CardPost from '@/components/cards/CardPost';
 import { useRecoilState } from 'recoil';
 import { createPostState } from '../recoil/atom';
 interface Props {}
 
-const PostList = () => {
+const PostsLayout = () => {
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
 
   return (
@@ -26,7 +26,7 @@ const PostList = () => {
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
           <h1 className='text-lg font-bold text-gray-400'>Posts</h1>
           <div className='flex p-5 justify-center'>
-            <PostCard />
+            <CardPost />
           </div>
         </div>
       </div>
@@ -34,4 +34,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default PostsLayout;

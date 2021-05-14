@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 
 const { TextArea } = Input;
 
-const CreatePostForm = ({}) => {
+const FormPost = ({}) => {
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
   const route = useRouter();
   const layout = {
@@ -20,19 +20,18 @@ const CreatePostForm = ({}) => {
     wrapperCol: { span: 24 },
   };
 
-//   router.push("/posts", null, { shallow: true });
-// import { useRouter } from "next/router";
+  //   router.push("/posts", null, { shallow: true });
 
   const onFinish = (values: { desc: string; image: any }) => {
     // values.image = fileList;
     console.log('Success:', values);
     setModalActivePost(false);
-
     return route.push('/posts');
   };
 
   const handleCancel = () => {
     setModalActivePost(false);
+    return route.push('/posts');
   };
 
   return (
@@ -74,6 +73,6 @@ const CreatePostForm = ({}) => {
   );
 };
 
-export default CreatePostForm;
+export default FormPost;
 
 // tsrafce

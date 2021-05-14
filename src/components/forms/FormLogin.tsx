@@ -3,10 +3,10 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 const { Text } = Typography;
-interface SignFormProps {
+interface FormLoginProps {
   pageType: string;
 }
-const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
+const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
   const tailLayout = {
     wrapperCol: { offset: 9, span: 6 }
   };
@@ -84,4 +84,4 @@ const SignForm: React.FC<SignFormProps> = ({ pageType }) => {
   );
 };
 
-export default SignForm;
+export default FormLogin;

@@ -4,7 +4,7 @@ import 'tailwindcss/tailwind.css';
 import { RecoilRoot } from 'recoil';
 import { AppProps } from 'next/dist/next-server/lib/router/router';
 
-import MainLayout from '@/components/Layout/MainLayout';
+import MainLayout from '@/components/layouts/MainLayout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

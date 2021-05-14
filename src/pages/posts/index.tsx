@@ -7,8 +7,8 @@ import {
   import Home from '../index';
   import { useRecoilState } from 'recoil';
   import { createPostState } from '@/components/recoil/atom';
-  import PostCard from '@/components/posts/PostCard';
-  import CreatePostForm from '@/components/posts/CreatePostForm';
+  import CardPost from '@/components/cards/CardPost';
+  import FormPost from '@/components/forms/FormPost';
   import Link from 'next/link';
 
 interface Props {}
@@ -39,7 +39,7 @@ const posts = () => {
             <Divider>Posts</Divider>
           </h1>
           <div className='flex p-5 justify-center'>
-            <PostCard />
+            <CardPost />
           </div>
         </div>
       </div>

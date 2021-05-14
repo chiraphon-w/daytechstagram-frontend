@@ -9,7 +9,7 @@ import {
 } from 'antd';
 import React from 'react';
 import Head from 'next/head';
-import CreatePostForm from '@/components/posts/CreatePostForm';
+import FormPost from '@/components/forms/FormPost';
 import Home from '../index';
 import { useRecoilState } from 'recoil';
 import { createPostState } from '@/components/recoil/atom';
@@ -30,7 +30,7 @@ const create = () => {
           +
         </Button>
       </div>
-      <CreatePostForm />
+      <FormPost />
     </div>
   );
 };

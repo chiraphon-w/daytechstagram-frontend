@@ -4,7 +4,7 @@ import { Form, Input, Button, Image, Typography, Card } from 'antd';
 const { Meta } = Card;
 interface Props {}
 
-const PostCard = (props: Props) => {
+const CardPost = (props: Props) => {
   return (
     <>
       <div className='justify-center'>
@@ -26,4 +26,4 @@ const PostCard = (props: Props) => {
   );
 };
 
-export default PostCard;
+export default CardPost;
