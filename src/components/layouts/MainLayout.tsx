@@ -1,7 +1,10 @@
 import { Button, Typography, Layout, Menu } from 'antd';
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Disclosure, Transition } from '@headlessui/react';
+import { useRecoilState } from 'recoil';
+import { userLoginState, userLogoutState } from '../recoil/atom';
+import { useRouter } from 'next/router';
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 interface MainLayoutProps {
@@ -9,6 +12,15 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const [userToken, setUserToken] = useRecoilState(userLoginState);
+  const [logoutToken, setLogoutToken] = useRecoilState(userLogoutState);
+  const route = useRouter();
+
+  const handleLogout = () => {
+    setLogoutToken(true);
+    return route.push('/signin');
+  };
+
   return (
     <>
       <div>
@@ -26,18 +38,40 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
-                      <Menu
-                        theme='dark'
-                        mode='horizontal'
-                        defaultSelectedKeys={['2']}
-                      >
-                        <Menu.Item key='1'>
-                          <Link shallow={true} href='/posts'>Home</Link>
-                        </Menu.Item>
-                        <Menu.Item key='2'>
-                          <Link shallow={true} href='/signin'>Logout</Link>
-                        </Menu.Item>
-                      </Menu>
+                      {userToken ? (
+                        <Menu
+                          className='bg-gray-800'
+                          mode='horizontal'
+                          defaultSelectedKeys={['2']}
+                        >
+                          <Menu.Item key='1'>
+                            <Button type='link'>
+                              <Link shallow={true} href='/posts'>
+                                Home
+                              </Link>
+                            </Button>
+                          </Menu.Item>
+                          <Menu.Item key='2'>
+                            <Button type='link' onClick={handleLogout}>
+                              Logout
+                            </Button>
+                          </Menu.Item>
+                        </Menu>
+                      ) : (
+                        <Menu
+                          className='bg-gray-800'
+                          mode='horizontal'
+                          defaultSelectedKeys={['1']}
+                        >
+                          <Menu.Item key='3'>
+                            <Button type='link'>
+                              <Link shallow={true} href='/signin'>
+                                Home
+                              </Link>
+                            </Button>
+                          </Menu.Item>
+                        </Menu>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -48,7 +82,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </div>
           </>
         </Disclosure>
-
         <header className='bg-white shadow'>
           <div className='max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8'>
             <h1 className='text-3xl font-bold text-gray-900'>

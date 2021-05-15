@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Image, Typography, Modal } from 'antd';
 import { useRecoilState } from 'recoil';
-import { createPostState, editPostState } from '../recoil/atom';
 import { Upload } from 'antd';
 import Link from 'next/link';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import CardPost from '@/components/cards/CardPost';
+import { editCommentState } from '../recoil/atom';
 
 const { TextArea } = Input;
 interface Props {}
 
-const FormEditPost = () => {
-  const [modalActiveEditPost, setModalActiveEditPost] =
-    useRecoilState(editPostState);
+const FormEditComment = () => {
+  const [modalActiveEditComment, setModalActiveEditComment] =
+    useRecoilState(editCommentState);
 
   const route = useRouter();
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 24 },
   };
-  console.log('FormEditPost');
+  console.log('FormEditComment');
   //   router.push("/posts", null, { shallow: true });
 
   const onFinish = (values: { descPost: string }) => {
     console.log('Success:', values);
-    setModalActiveEditPost(false);
+    setModalActiveEditComment(false);
     return route.push('/posts');
   };
 
   const handleCancel = () => {
-    setModalActiveEditPost(false);
+    setModalActiveEditComment(false);
     return route.push('/posts');
   };
   return (
@@ -40,33 +40,39 @@ const FormEditPost = () => {
       </div>
       <Modal
         title='Edit Post'
-        visible={modalActiveEditPost}
+        visible={modalActiveEditComment}
         footer={null}
         onCancel={handleCancel}
       >
         <Form
           {...layout}
-          name='formEditPost'
+          name='formEditComment'
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          layout='inline'
         >
           <Form.Item
-            name='editDesc'
-            rules={[{ required: true, message: 'Please Enter Descripton' }]}
+            name='editComment'
+            rules={[{ required: true, message: 'Please Enter Comment' }]}
           >
             <TextArea
-              placeholder="What's happening?"
+              style={{ width: 400 }}
+              placeholder='Enter your comment'
               autoSize
+              defaultValue="Wowww!!! SHE'S SO HOTTT!!!🔥🔥🔥🔥"
               className='my-2'
-              defaultValue="I'm so cold 😱❄"
             />
           </Form.Item>
-          <Form.Item>
-            <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
-              <Button type='dashed' htmlType='submit'>
-                Edit Post
-              </Button>
-            </div>
+          <Form.Item className='pt-2 m-0'>
+            <Button
+              onClick={() => {
+                onFinish;
+              }}
+              type='dashed'
+              htmlType='submit'
+            >
+              Edit
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
@@ -74,4 +80,4 @@ const FormEditPost = () => {
   );
 };
 
-export default FormEditPost;
+export default FormEditComment;

@@ -10,39 +10,36 @@ import CardComment from '@/components/cards/CardComment';
 import { useRecoilState } from 'recoil';
 import { editPostState } from '../recoil/atom';
 import FormEditPost from '@/components/forms/FormEditPost';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const { Meta } = Card;
 interface Props {}
 
 const CardPost = () => {
+  const router = useRouter();
   const [modalActiveEditPost, setModalActiveEditPost] =
     useRecoilState(editPostState);
 
-  const [modalEditContent, setModalEditContent] = useState<JSX.Element>();
-
-  const handleEditPost = () => {
-    console.log('yo');
-    alert('test');
-    setModalEditContent(<FormEditPost />);
-  };
   return (
     <>
       <div>
         <Card
           title={<p className='text-xs text-gray-500'>updated on 06:43 pm</p>}
           hoverable
-          style={{ width: 500 }}
+          style={{ width: 600 }}
           className='my-4'
           extra={[
-            <EditOutlined
-              key='editPost'
-              onClick={() => { 
-                handleEditPost;
-                setModalActiveEditPost(true);
-               
-              }}
-              className='pr-3'
-            />,
+            <Link shallow={true} href='/posts/desc'>
+              <EditOutlined
+                key='editPost'
+                onClick={() => {
+                  setModalActiveEditPost(true);
+                }}
+                className='pr-3'
+              />
+            </Link>,
+
             <DeleteOutlined
               key='deletePost'
               onClick={() => {

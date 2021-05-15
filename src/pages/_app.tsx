@@ -9,12 +9,12 @@ import MainLayout from '@/components/layouts/MainLayout';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
-    <MainLayout>
       <RecoilRoot>
-        <Component {...pageProps} />
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
       </RecoilRoot>
-    </MainLayout>
-  </div>
+    </div>
   );
 }
 

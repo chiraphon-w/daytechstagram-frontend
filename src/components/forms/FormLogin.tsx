@@ -5,20 +5,25 @@ import Link from 'next/link';
 import router, { useRouter } from 'next/router';
 import axios from 'axios';
 import { authAxios } from 'src/pages/api/daytechbackend';
+import { useRecoilState } from 'recoil';
+import { userLoginState } from '../recoil/atom';
 
 const { Text } = Typography;
 interface FormLoginProps {
   pageType: string;
 }
 const cookieCutter = require('cookie-cutter');
+
 const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
+  const [userToken, setUserToken] = useRecoilState(userLoginState);
   const route = useRouter();
   const [form] = Form.useForm();
   const tailLayout = {
     wrapperCol: { offset: 9, span: 7 },
   };
+  // : Promise<boolean>
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: any): Promise<boolean | undefined> => {
     if (pageType === 'signup') {
       try {
         const params = new URLSearchParams();
@@ -46,7 +51,10 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
         cookieCutter.set('jwt', data.token);
         return router.push('/posts');
       } catch (e) {
-        console.log('e', e.response);
+        if (e.response.data.statusCode == 401) {
+          alert('Invalid username or password');
+          form.resetFields();
+        }
       }
     }
 
@@ -65,6 +73,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
 
       <Form
         {...tailLayout}
+        form={form}
         name='normal_login'
         className='login-form'
         initialValues={{ remember: true }}

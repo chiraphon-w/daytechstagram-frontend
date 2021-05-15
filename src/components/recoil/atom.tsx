@@ -13,3 +13,19 @@ export const editPostState = atom<boolean>({
   default: false,
 });
 
+export const editCommentState = atom<boolean>({
+  key: 'editCommentST',
+  default: false,
+});
+
+
+export const userLoginState = atom<boolean>({
+  key: 'userLogin',
+  default: false,
+});
+
+export const userLogoutState = atom<boolean>({
+  key: 'userLogout',
+  default: false,
+});
+

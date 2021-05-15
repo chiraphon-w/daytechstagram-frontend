@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Home from '../index';
 import { useRecoilState } from 'recoil';
-import { createPostState } from '@/components/recoil/atom';
+import { createPostState, userLoginState } from '@/components/recoil/atom';
 import CardPost from '@/components/cards/CardPost';
 import FormPost from '@/components/forms/FormPost';
 import Link from 'next/link';
@@ -12,11 +12,15 @@ interface Props {}
 
 const posts = () => {
   // const [modalPostContent, setModalPostContent] = useState<JSX.Element>();
+  const [userToken, setUserToken] = useRecoilState(userLoginState);
+  setUserToken(true);
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
   // const handleAdd = () => {
   //   console.log('test');
   //   setModalPostContent(<Link href='/'></Link>);
   // };
+  console.log('userToken', userToken);
+
   return (
     <>
       <div>
@@ -39,13 +43,13 @@ const posts = () => {
             </Button>
           </div>
         </div>
-      </div> 
-      <div className='flex flex-wrap justify-center'>
-      <div className='flex-row'>
-        <CardPost />
-        <CardPost />
       </div>
-    </div>
+      <div className='flex flex-wrap justify-center'>
+        <div className='flex-row'>
+          <CardPost />
+          <CardPost />
+        </div>
+      </div>
     </>
   );
 };

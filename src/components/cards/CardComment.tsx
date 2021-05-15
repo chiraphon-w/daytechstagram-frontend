@@ -6,30 +6,38 @@ import {
     CheckSquareOutlined,
   } from '@ant-design/icons';
 import FormComment from '@/components/forms/FormComment';
+import { useRecoilState } from 'recoil';
+import { editCommentState } from '../recoil/atom';
+import Link from 'next/link';
+
 const { Meta } = Card;
 interface Props {}
 
-const CardComment = (props: Props) => {
+const CardComment = () => {
+  const [modalActiveEditComment, setModalActiveEditComment] =
+  useRecoilState(editCommentState);
   return (
     <>
       <div className='items-center'>
         <Card
           title={<p className='text-xs text-gray-500'>updated on 06:43 pm</p>}
           hoverable
-          style={{ width: 450 }}
+          style={{ width: 550 }}
           className='my-4'
           extra={[
+            <Link shallow={true} href='/comments/desc'>
             <EditOutlined
-              key='editPost'
+              key='editcomment'
               onClick={() => {
-                alert('editPost');
+                setModalActiveEditComment(true);
               }}
               className='pr-3'
-            />,
+            />
+          </Link>,
             <DeleteOutlined
-              key='deletePost'
+              key='deletecomment'
               onClick={() => {
-                alert('deletePost');
+                alert('deletecomment');
               }}
             />,
           ]}
