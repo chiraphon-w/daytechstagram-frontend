@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-
-
 import { Form, Input, Button, Image, Typography, Modal } from 'antd';
 import { useRecoilState } from 'recoil';
-import { createPostState } from '../recoil/atom';
+import { createPostState, editPostState } from '../recoil/atom';
 import { Upload } from 'antd';
-import ImgCrop from 'antd-img-crop';
 import Link from 'next/link';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
@@ -13,47 +10,48 @@ import CardPost from '@/components/cards/CardPost';
 
 const { TextArea } = Input;
 interface Props {}
-const FormPost = ({}) => {
 
-  const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
+const FormEditPost = () => {
+  const [modalActiveEditPost, setModalActiveEditPost] =
+    useRecoilState(editPostState);
+    
   const route = useRouter();
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 24 },
   };
-
+  console.log('FormEditPost');
   //   router.push("/posts", null, { shallow: true });
 
-  const onFinish = (values: { descPost: string; fileList: any }) => {
+  const onFinish = (values: { descPost: string }) => {
     console.log('Success:', values);
-    setModalActivePost(false);
+    setModalActiveEditPost(false);
     return route.push('/posts');
   };
 
   const handleCancel = () => {
-    setModalActivePost(false);
+    setModalActiveEditPost(false);
     return route.push('/posts');
   };
-
   return (
     <>
       <div className='flex justify-center'>
         <CardPost />
       </div>
       <Modal
-        title='Create Post'
-        visible={modalActivePost}
+        title='Edit Post'
+        visible={modalActiveEditPost}
         footer={null}
         onCancel={handleCancel}
       >
         <Form
           {...layout}
-          name='formPost'
+          name='formEditPost'
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
           <Form.Item
-            name='descPost'
+            name='editDesc'
             rules={[{ required: true, message: 'Please Enter Descripton' }]}
           >
             <TextArea
@@ -62,18 +60,10 @@ const FormPost = ({}) => {
               className='my-2'
             />
           </Form.Item>
-          <Form.Item
-            name='fileList'
-            rules={[{ required: true, message: 'Please Upload a Photo' }]}
-          >
-            <Upload listType='picture' maxCount={1}>
-              <Button icon={<UploadOutlined />}>Upload</Button>
-            </Upload>
-          </Form.Item>
           <Form.Item>
             <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
               <Button type='dashed' htmlType='submit'>
-                Post
+                Edit Post
               </Button>
             </div>
           </Form.Item>
@@ -83,6 +73,4 @@ const FormPost = ({}) => {
   );
 };
 
-export default FormPost;
-
-// tsrafce
+export default FormEditPost;

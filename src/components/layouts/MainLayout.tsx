@@ -32,10 +32,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         defaultSelectedKeys={['2']}
                       >
                         <Menu.Item key='1'>
-                          <Link href='/posts'>Home</Link>
+                          <Link shallow={true} href='/posts'>Home</Link>
                         </Menu.Item>
                         <Menu.Item key='2'>
-                          <Link href='/signin'>Logout</Link>
+                          <Link shallow={true} href='/signin'>Logout</Link>
                         </Menu.Item>
                       </Menu>
                     </div>

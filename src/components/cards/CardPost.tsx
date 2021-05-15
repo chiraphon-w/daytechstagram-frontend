@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Image, Typography, Card } from 'antd';
 import {
   EditOutlined,
@@ -7,23 +7,39 @@ import {
 } from '@ant-design/icons';
 import FormComment from '@/components/forms/FormComment';
 import CardComment from '@/components/cards/CardComment';
+import { useRecoilState } from 'recoil';
+import { editPostState } from '../recoil/atom';
+import FormEditPost from '@/components/forms/FormEditPost';
+
 const { Meta } = Card;
 interface Props {}
 
-const CardPost = (props: Props) => {
+const CardPost = () => {
+  const [modalActiveEditPost, setModalActiveEditPost] =
+    useRecoilState(editPostState);
+
+  const [modalEditContent, setModalEditContent] = useState<JSX.Element>();
+
+  const handleEditPost = () => {
+    console.log('yo');
+    alert('test');
+    setModalEditContent(<FormEditPost />);
+  };
   return (
     <>
       <div>
         <Card
-          title={<p className='text-xs text-gray-500'>updated on 06:43 pm</p> }
+          title={<p className='text-xs text-gray-500'>updated on 06:43 pm</p>}
           hoverable
           style={{ width: 500 }}
           className='my-4'
           extra={[
             <EditOutlined
               key='editPost'
-              onClick={() => {
-                alert('editPost');
+              onClick={() => { 
+                handleEditPost;
+                setModalActiveEditPost(true);
+               
               }}
               className='pr-3'
             />,

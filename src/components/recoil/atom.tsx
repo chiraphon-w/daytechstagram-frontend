@@ -3,8 +3,13 @@ import { atom } from 'recoil'; //useState
 
 
 
-export const createPostState = atom({
+export const createPostState = atom<boolean>({
   key: 'createPostST',
+  default: false,
+});
+
+export const editPostState = atom<boolean>({
+  key: 'editPostST',
   default: false,
 });
 

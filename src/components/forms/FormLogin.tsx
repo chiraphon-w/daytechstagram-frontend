@@ -2,17 +2,59 @@ import { Form, Input, Button, Checkbox, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import router, { useRouter } from 'next/router';
+import axios from 'axios';
+import { authAxios } from 'src/pages/api/daytechbackend';
+
 const { Text } = Typography;
 interface FormLoginProps {
   pageType: string;
 }
+const cookieCutter = require('cookie-cutter');
 const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
+  const route = useRouter();
+  const [form] = Form.useForm();
   const tailLayout = {
-    wrapperCol: { offset: 9, span: 7 }
+    wrapperCol: { offset: 9, span: 7 },
   };
 
-  const onFinish = (values: { password: string; cfpassword: string }) => {
+  const onFinish = async (values: any) => {
+    if (pageType === 'signup') {
+      try {
+        const params = new URLSearchParams();
+        params.append('username', values.username);
+        params.append('password', values.password);
+
+        await authAxios.post('/users/signup', params);
+        return router.push('/signin');
+      } catch (e) {
+        console.log('e', e.response);
+        if (e.response.data.statusCode == 409) {
+          alert('username is already exits');
+        } else if (e.response.data.statusCode == 400) {
+          alert('password is to week');
+        }
+      }
+    } else {
+      try {
+        const params = new URLSearchParams();
+        params.append('username', values.username);
+        params.append('password', values.password);
+
+        const { data } = await authAxios.post('/users/signin', params);
+        console.log(data);
+        cookieCutter.set('jwt', data.token);
+        return router.push('/posts');
+      } catch (e) {
+        console.log('e', e.response);
+      }
+    }
+
     console.log('Success:', values);
+    if (pageType === 'signin') {
+    } else {
+      return route.push('/signin');
+    }
   };
 
   return (
@@ -50,37 +92,36 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
         <Form.Item style={{ marginTop: '0px' }}>
           <Text type='secondary'>Use at least 8 characters</Text>
         </Form.Item>
-        <Form.Item>
-          <Form.Item name='remember' valuePropName='checked' noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-          <Link href='/'>Forgot password</Link>
-        </Form.Item>
+
         <Form.Item>
           <div className='flex flex-row'>
             <Button
               type='primary'
               htmlType='submit'
               className='login-form-button'
-              onClick={() => {}}
             >
-              {pageType === 'signin' ? <Link href='/posts'>Login</Link> : <Link href='/posts'>SignUp</Link>}
+              {pageType === 'signin' ? 'Login' : 'SignUp'}
             </Button>
             <div className='pl-5 pt-1'>
               {pageType === 'signin' ? (
                 <>
-                  Don't have an account yet? <Link href='/signup'>Register now!</Link>
+                  Don't have an account yet?
+                  <Link shallow={true} href='/signup'>
+                    Register now!
+                  </Link>
                 </>
               ) : (
                 <>
-                  Already have an account? <Link href='/signin'>Sign In</Link>
+                  Already have an account?
+                  <Link shallow={true} href='/signin'>
+                    Sign In
+                  </Link>
                 </>
               )}
             </div>
           </div>
         </Form.Item>
       </Form>
-      
     </>
   );
 };

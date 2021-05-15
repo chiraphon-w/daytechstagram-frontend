@@ -35,7 +35,7 @@ const FormComment = () => {
           name='descComment'
           rules={[{ required: true, message: 'Please Enter Descripton' }]}
         >
-          <TextArea style={{ width: 320 }} placeholder="What's happening?" autoSize className='my-2' />
+          <TextArea style={{ width: 320 }} placeholder="Enter your comment" autoSize className='my-2' />
         </Form.Item>
         <Form.Item className='pt-2 m-0'>
           <Button onClick={() => {onFinish}} type='dashed' htmlType='submit'>

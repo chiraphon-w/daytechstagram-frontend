@@ -23,7 +23,14 @@ const create = () => {
       <div className='pt-5'>
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
           <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
-            <Button type='dashed'>New Post</Button>
+            <Button
+              onClick={() => {
+                setModalActivePost(true);
+              }}
+              type='dashed'
+            >
+              New Post
+            </Button>
           </div>
         </div>
       </div>
