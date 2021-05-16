@@ -20,7 +20,7 @@ const FormEditComment = () => {
     labelCol: { span: 8 },
     wrapperCol: { span: 24 },
   };
-  console.log('FormEditComment');
+  // console.log('FormEditComment');
   //   router.push("/posts", null, { shallow: true });
 
   const onFinish = (values: { descPost: string }) => {

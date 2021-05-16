@@ -34,7 +34,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
         await authAxios.post('/users/signup', params);
         return router.push('/signin');
       } catch (e) {
-        console.log('e', e.response);
+        // console.log('e', e.response);
         if (e.response.data.statusCode == 409) {
           // setErrorCode(409);
           alert('Username already exist!');
@@ -52,7 +52,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
         params.append('password', values.password);
 
         const { data } = await authAxios.post('/users/signin', params);
-        console.log(data);
+        // console.log(data);
         cookieCutter.set('jwt', data.token);
         setUserToken(true);
         return router.push('/posts');
@@ -67,7 +67,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
 
     console.log('Success:', values);
     if (errorCode === 0) {
-      console.log(errorCode);
+      // console.log(errorCode);
       if (pageType === 'signin') {
         // return route.push('/posts');
       } else {

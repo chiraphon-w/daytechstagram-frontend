@@ -15,7 +15,7 @@ const cookieCutter = require('cookie-cutter');
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
 
-  console.log('MainLayout ', userToken);
+  // console.log('MainLayout ', userToken);
   // const [logoutToken, setLogoutToken] = useRecoilState(userLogoutState);
   const route = useRouter();
 
