@@ -1,6 +1,8 @@
-export interface TodoProps {
+export interface Post {
   id: number;
-  completed: boolean;
-  value: string;
-  date: string;
+  image: string;
+  desc: string;
+  created: string;
+  updated: string;
+  userId: number;
 }

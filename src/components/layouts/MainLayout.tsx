@@ -14,9 +14,6 @@ const cookieCutter = require('cookie-cutter');
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
-
-  // console.log('MainLayout ', userToken);
-  // const [logoutToken, setLogoutToken] = useRecoilState(userLogoutState);
   const route = useRouter();
 
   const handleLogout = () => {
@@ -42,7 +39,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
-                      {!userToken ? (
+                      {userToken === false ? (
                         <Menu
                           className='bg-gray-800'
                           mode='horizontal'
