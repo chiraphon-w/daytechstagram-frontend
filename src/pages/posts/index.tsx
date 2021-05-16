@@ -7,19 +7,21 @@ import { createPostState, userLoginState } from '@/components/recoil/atom';
 import CardPost from '@/components/cards/CardPost';
 import FormPost from '@/components/forms/FormPost';
 import Link from 'next/link';
-
+import { GetServerSideProps } from 'next';
+// import Cookies from 'cookies';
+import { Axios } from '../api/daytechbackend';
+const Cookies = require('cookies');
 interface Props {}
 
 const posts = () => {
   // const [modalPostContent, setModalPostContent] = useState<JSX.Element>();
-  const [userToken, setUserToken] = useRecoilState(userLoginState);
-  setUserToken(true);
+  // const [userToken, setUserToken] = useRecoilState(userLoginState);
+  // setUserToken(true);
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
   // const handleAdd = () => {
   //   console.log('test');
   //   setModalPostContent(<Link href='/'></Link>);
   // };
-  console.log('userToken', userToken);
 
   return (
     <>
@@ -53,4 +55,30 @@ const posts = () => {
     </>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  // Create a cookies instance
+  const cookies = new Cookies(req, res);
+  const jwt = cookies.get('jwt');
+
+  // if not found cookie, just redirect to sign in page
+  if (!jwt) {
+    res.writeHead(302, { Location: '/signin' }); //302 is a just code to redirect
+    res.end();
+  }
+
+  const { data } = await Axios.get('/posts', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+
+  return {
+    props: {
+      jwt,
+      feeds: data,
+    },
+  };
+};
+
 export default posts;

@@ -18,6 +18,10 @@ export const editCommentState = atom<boolean>({
   default: false,
 });
 
+export const errorState = atom<number>({
+  key: 'errorST',
+  default: 0,
+});
 
 export const userLoginState = atom<boolean>({
   key: 'userLogin',

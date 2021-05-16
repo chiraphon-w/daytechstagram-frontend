@@ -10,14 +10,18 @@ const { Title } = Typography;
 interface MainLayoutProps {
   children: JSX.Element & ReactNode;
 }
+const cookieCutter = require('cookie-cutter');
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
-  const [logoutToken, setLogoutToken] = useRecoilState(userLogoutState);
+
+  console.log('MainLayout ', userToken);
+  // const [logoutToken, setLogoutToken] = useRecoilState(userLogoutState);
   const route = useRouter();
 
   const handleLogout = () => {
-    setLogoutToken(true);
+    cookieCutter.set('jwt', '', { expires: new Date(0) });
+    setUserToken(false);
     return route.push('/signin');
   };
 
@@ -38,7 +42,21 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
-                      {userToken ? (
+                      {!userToken ? (
+                        <Menu
+                          className='bg-gray-800'
+                          mode='horizontal'
+                          defaultSelectedKeys={['1']}
+                        >
+                          <Menu.Item key='3'>
+                            <Button type='link'>
+                              <Link shallow={true} href='/signin'>
+                                Home
+                              </Link>
+                            </Button>
+                          </Menu.Item>
+                        </Menu>
+                      ) : (
                         <Menu
                           className='bg-gray-800'
                           mode='horizontal'
@@ -54,20 +72,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                           <Menu.Item key='2'>
                             <Button type='link' onClick={handleLogout}>
                               Logout
-                            </Button>
-                          </Menu.Item>
-                        </Menu>
-                      ) : (
-                        <Menu
-                          className='bg-gray-800'
-                          mode='horizontal'
-                          defaultSelectedKeys={['1']}
-                        >
-                          <Menu.Item key='3'>
-                            <Button type='link'>
-                              <Link shallow={true} href='/signin'>
-                                Home
-                              </Link>
                             </Button>
                           </Menu.Item>
                         </Menu>

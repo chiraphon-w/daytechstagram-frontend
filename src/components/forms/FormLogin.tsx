@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox, Typography } from 'antd';
+import { Form, Input, Button, Alert, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -6,7 +6,7 @@ import router, { useRouter } from 'next/router';
 import axios from 'axios';
 import { authAxios } from 'src/pages/api/daytechbackend';
 import { useRecoilState } from 'recoil';
-import { userLoginState } from '../recoil/atom';
+import { errorState, userLoginState } from '../recoil/atom';
 
 const { Text } = Typography;
 interface FormLoginProps {
@@ -16,12 +16,13 @@ const cookieCutter = require('cookie-cutter');
 
 const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
+  const [errorCode, setErrorCode] = useRecoilState(errorState);
+
   const route = useRouter();
   const [form] = Form.useForm();
   const tailLayout = {
     wrapperCol: { offset: 9, span: 7 },
   };
-  // : Promise<boolean>
 
   const onFinish = async (values: any): Promise<boolean | undefined> => {
     if (pageType === 'signup') {
@@ -35,9 +36,13 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
       } catch (e) {
         console.log('e', e.response);
         if (e.response.data.statusCode == 409) {
-          alert('username is already exits');
+          // setErrorCode(409);
+          alert('Username already exist!');
         } else if (e.response.data.statusCode == 400) {
-          alert('password is to week');
+          // setErrorCode(400);
+          alert(
+            "Make sure it's at least 4 characters including a number, a lowercase and a uppercase letter"
+          );
         }
       }
     } else {
@@ -49,9 +54,11 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
         const { data } = await authAxios.post('/users/signin', params);
         console.log(data);
         cookieCutter.set('jwt', data.token);
+        setUserToken(true);
         return router.push('/posts');
       } catch (e) {
         if (e.response.data.statusCode == 401) {
+          // setErrorCode(401);
           alert('Invalid username or password');
           form.resetFields();
         }
@@ -59,14 +66,58 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
     }
 
     console.log('Success:', values);
-    if (pageType === 'signin') {
-    } else {
-      return route.push('/signin');
+    if (errorCode === 0) {
+      console.log(errorCode);
+      if (pageType === 'signin') {
+        // return route.push('/posts');
+      } else {
+        // setErrorCode(0);
+        return route.push('/signin');
+      }
     }
   };
 
   return (
     <>
+      {/* {errorCode === 409 ? (
+        <Alert
+          message='Username already exist!'
+          type='error'
+          showIcon
+          closable
+        />
+      ) : (
+        <></>
+      )}
+      {errorCode === 401 ? (
+        <Alert
+          message='Invalid username or password'
+          type='error'
+          showIcon
+          closable
+        />
+      ) : (
+        <></>
+      )}
+      {errorCode === 400 ? (
+        <Alert
+          message="Make sure it's at least 4 characters including a number, a lowercase and a uppercase letter"
+          type='error'
+          showIcon
+          closable
+        />
+      ) : (
+        <></>
+      )}
+      {errorCode !== 400 && errorCode !== 409 && errorCode !== 0 ? (
+        <Alert message='SUCCESS!' type='success' showIcon closable />
+      ) : (
+        <></>
+      )} */}
+      {/* (
+        <Alert message='SUCCESS!' type='success' showIcon closable />
+      )} */}
+
       <div className='text-gray-500 text-lg text-center p-10 pr-10'>
         {pageType === 'signin' ? 'Sign In' : 'Sign Up'}
       </div>
@@ -99,7 +150,14 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
           />
         </Form.Item>
         <Form.Item style={{ marginTop: '0px' }}>
-          <Text type='secondary'>Use at least 8 characters</Text>
+          {pageType === 'signup' ? (
+            <Text type='secondary'>
+              Use at least 4 characters including a number, a lowercase and a
+              uppercase letter
+            </Text>
+          ) : (
+            <></>
+          )}
         </Form.Item>
 
         <Form.Item>
@@ -114,16 +172,14 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
             <div className='pl-5 pt-1'>
               {pageType === 'signin' ? (
                 <>
-                  Don't have an account yet?
                   <Link shallow={true} href='/signup'>
-                    Register now!
+                    Don't have an account yet?
                   </Link>
                 </>
               ) : (
                 <>
-                  Already have an account?
                   <Link shallow={true} href='/signin'>
-                    Sign In
+                    Already have an account?
                   </Link>
                 </>
               )}

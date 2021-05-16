@@ -12,13 +12,6 @@ import { userLoginState, userLogoutState } from '@/components/recoil/atom';
 const cookieCutter = require('cookie-cutter');
 
 const signin = () => {
-  const [userToken, setUserToken] = useRecoilState(userLoginState);
-  const [logoutToken, setLogoutToken] = useRecoilState(userLogoutState);
-  setUserToken(false);
-  console.log('userToken', userToken);
-  if (!userToken && logoutToken) {
-    cookieCutter.set('jwt', '', { expires: new Date(0) });
-  }
 
   return (
     <div>
