@@ -19,7 +19,6 @@ import Cookies from 'js-cookie';
 
 const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
-  // const [errorCode, setErrorCode] = useRecoilState(errorState);
 
   const route = useRouter();
   const [form] = Form.useForm();

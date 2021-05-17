@@ -18,9 +18,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
   const route = useRouter();
 
-  if (route.asPath === '/posts') setUserToken(true);
-  else if (route.asPath === '/signin') setUserToken(false);
-  
+  // if (route.asPath === '/posts') setUserToken(true);
+  // else if (route.asPath === '/signin') setUserToken(false);
+
   const handleLogout = () => {
     Cookies.remove('jwt');
     setUserToken(false);

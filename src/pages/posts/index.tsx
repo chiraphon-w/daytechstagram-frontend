@@ -16,37 +16,38 @@ import { Axios } from '../api/daytechbackend';
 import { useRouter } from 'next/router';
 // const Cookies = require('cookies');
 import getCookies from '../../lib/utils/cookies';
+import decryptToken from '../../lib/utils/decryptToken';
+
 interface postsProps {
-  jwt: string;
+  decryptJwt: { username: string; iat: number; exp: number };
+  jwt: any;
   feeds: any;
 }
 
-const posts: React.FC<postsProps> = ({ jwt, feeds }) => {
-  // const jwt = cookies.get('jwt');
-  console.log('jwt : 1 ', jwt);
+const posts: React.FC<postsProps> = ({ decryptJwt, jwt, feeds }) => {
   const router = useRouter();
   const [posts, setPosts] = useRecoilState(postsState);
   useEffect(() => {
     setPosts(feeds);
-  }, []);
+    setUserToken(true);
+  }, [feeds]);
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
+  const [userToken, setUserToken] = useRecoilState(userLoginState);
 
   const onPostDelete = async (id: number) => {
     try {
-      await Axios.delete(`/posts/${id}`, {
+      const deleteData = await Axios.delete(`/posts/${id}`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       });
+      const temp: any = posts.filter((post: any) => post.id !== id);
+      setPosts(temp);
       message.success('Successfully delete a post');
-      // get posts
-      const { data } = await Axios.get('/posts', {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+
+      console.log('deleteData', deleteData);
+
       // set posts
-      setPosts(data);
     } catch (error) {
       message.error('Unable to delete a post');
     }
@@ -88,10 +89,11 @@ const posts: React.FC<postsProps> = ({ jwt, feeds }) => {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   //ทำงานก่อน
   // Create a cookies instance
-  // const cookies = new Cookies(req, res);
-  // const jwt = cookies.get('jwt');
-  const reqCookie: any = req.headers.cookie;
-  const jwt: any = await getCookies('jwt', reqCookie);
+
+  const reqCookie: string | undefined = req.headers.cookie;
+  const jwt: string = await getCookies('jwt', reqCookie);
+  const decryptJwt: string | object = await decryptToken(jwt);
+  // console.log('decryptJwt', decryptJwt);
   // if not found cookie, just redirect to sign in page
   if (!jwt) {
     res.writeHead(302, { Location: '/signin' }); //302 is a just code to redirect
@@ -106,6 +108,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   return {
     props: {
+      decryptJwt,
       jwt,
       feeds: data,
     },

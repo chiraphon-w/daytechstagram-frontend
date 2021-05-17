@@ -1,22 +1,27 @@
 import {
-    Button,
-    DatePicker,
-    Typography,
-    version,
-    Layout,
-    Menu,
-    Breadcrumb,
-  } from 'antd';
-import React from 'react';
+  Button,
+  DatePicker,
+  Typography,
+  version,
+  Layout,
+  Menu,
+  Breadcrumb,
+} from 'antd';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRecoilState } from 'recoil';
-import { editPostState } from '@/components/recoil/atom';
-import FormEditPost from '@/components/forms/FormEditPost'
+import { editPostState, userLoginState } from '@/components/recoil/atom';
+import FormEditPost from '@/components/forms/FormEditPost';
 
 interface Props {}
 
 const desc = () => {
-    const [modalActiveEditPost, setModalActiveEditPost] = useRecoilState(editPostState);
+  const [modalActiveEditPost, setModalActiveEditPost] =
+    useRecoilState(editPostState);
+  const [userToken, setUserToken] = useRecoilState(userLoginState);
+  useEffect(() => {
+    setUserToken(true);
+  }, []);
   return (
     <div>
       <Head>
