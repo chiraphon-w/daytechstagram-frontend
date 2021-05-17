@@ -1,11 +1,9 @@
 import React from 'react';
-import { Form, Input, Button, Image, Typography, Card } from 'antd';
+import { Card } from 'antd';
 import {
     EditOutlined,
     DeleteOutlined,
-    CheckSquareOutlined,
   } from '@ant-design/icons';
-import FormComment from '@/components/forms/FormComment';
 import { useRecoilState } from 'recoil';
 import { editCommentState } from '../recoil/atom';
 import Link from 'next/link';

@@ -6,13 +6,9 @@ import { useRecoilState } from 'recoil';
 import { userLoginState } from '../recoil/atom';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import { MainLayoutProps } from '../types';
 
-const { Header, Content, Footer } = Layout;
-const { Title } = Typography;
-interface MainLayoutProps {
-  children: JSX.Element & ReactNode;
-}
-// const cookieCutter = require('cookie-cutter');
+const { Footer } = Layout;
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);

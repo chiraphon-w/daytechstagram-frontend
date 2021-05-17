@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Image, Typography, Modal } from 'antd';
 import { useRecoilState } from 'recoil';
-import { createPostState, editPostState } from '../recoil/atom';
+import {
+  createPostState,
+  editPostIdState,
+  editPostState,
+  postsState,
+} from '../recoil/atom';
 import { Upload } from 'antd';
 import Link from 'next/link';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import CardPost from '@/components/cards/CardPost';
+import { Post } from '../types';
 
 const { TextArea } = Input;
 interface Props {}
 
-const FormEditPost = () => {
+const FormEditPost = ({ post }: any) => {
   const [modalActiveEditPost, setModalActiveEditPost] =
     useRecoilState(editPostState);
+  const [posts, setPosts] = useRecoilState(postsState);
+  const [selectedId, setSelectedId] = useRecoilState(editPostIdState);
+  const [state, setstate] = useState({});
 
   const route = useRouter();
   const layout = {
@@ -29,47 +38,48 @@ const FormEditPost = () => {
     return route.push('/posts');
   };
 
-  const handleCancel = () => {
-    setModalActiveEditPost(false);
-    return route.push('/posts');
-  };
+
+  // const handleCancel = () => {
+  //   setModalActiveEditPost(false);
+  //   return route.push('/posts');
+  // };
   return (
     <>
       {/* <div className='flex justify-center'>
         <CardPost />
       </div> */}
-      <Modal
+      {/* <Modal
         title='Edit Post'
         visible={modalActiveEditPost}
         footer={null}
         onCancel={handleCancel}
+      > */}
+      <Form
+        {...layout}
+        name='formEditPost'
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
       >
-        <Form
-          {...layout}
-          name='formEditPost'
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
+        <Form.Item
+          name='editDesc'
+          rules={[{ required: true, message: 'Please Enter Descripton' }]}
         >
-          <Form.Item
-            name='editDesc'
-            rules={[{ required: true, message: 'Please Enter Descripton' }]}
-          >
-            <TextArea
-              placeholder="What's happening?"
-              autoSize
-              className='my-2'
-              defaultValue="I'm so cold 😱❄"
-            />
-          </Form.Item>
-          <Form.Item>
-            <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
-              <Button type='dashed' htmlType='submit'>
-                Edit Post
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
+          <TextArea
+            placeholder="What's happening?"
+            autoSize
+            className='my-2'
+            defaultValue=''
+          />
+        </Form.Item>
+        <Form.Item>
+          <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
+            <Button type='dashed' htmlType='submit'>
+              Edit Post
+            </Button>
+          </div>
+        </Form.Item>
+      </Form>
+      {/* </Modal> */}
     </>
   );
 };

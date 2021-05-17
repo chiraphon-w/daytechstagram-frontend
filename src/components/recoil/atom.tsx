@@ -29,3 +29,12 @@ export const postsState = atom<[]>({
   default: [],
 });
 
+export const editPostIdState = atom<number>({
+  key: 'editPostId',
+  default: 0,
+});
+
+export const onPostIdState = atom<{}>({
+  key: 'onPostId',
+  default: {},
+});

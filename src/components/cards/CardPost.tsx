@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Image, Avatar, Card } from 'antd';
-import {
-  EditOutlined,
-  DeleteOutlined,
-  CheckSquareOutlined,
-} from '@ant-design/icons';
+import { Avatar, Card, Modal } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import FormComment from '@/components/forms/FormComment';
 import CardComment from '@/components/cards/CardComment';
 import { useRecoilState } from 'recoil';
-import { editPostState } from '../recoil/atom';
-import FormEditPost from '@/components/forms/FormEditPost';
+import { editPostIdState, editPostState, onPostIdState } from '../recoil/atom';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Post } from '../types';
 import decryptToken from 'src/lib/utils/decryptToken';
 import Cookies from 'js-cookie';
-
+import FormEditPost from '../forms/FormEditPost';
 const { Meta } = Card;
 
 interface CardPostProps {
   posts: Post[];
-  // onPostEdit: (id: number, text: string) => void;
+  onPostEdit: (id: number, text: string) => void;
   onPostDelete: (id: number) => void;
-  // decryptJwt: { username: string; iat: number; exp: number };
 }
 
-const CardPost: React.FC<CardPostProps> = ({ posts, onPostDelete }) => {
+const CardPost: React.FC<CardPostProps> = ({
+  posts,
+  onPostDelete,
+  onPostEdit,
+}) => {
   useEffect(() => {
     const jwt: any = Cookies.get('jwt');
     const decryptJwt = decryptToken(jwt);
@@ -33,37 +31,57 @@ const CardPost: React.FC<CardPostProps> = ({ posts, onPostDelete }) => {
     console.log('decryptJwt ', decryptJwt);
   }, []);
 
-  // const decryptJwt = decryptToken(jwt);
-
-  const [userInfo, setUserInfo] = useState({});
-
+  const [userInfo, setUserInfo] = useState<any>({});
+  // const [selectedId, setSelectedId] = useState(0);
+  const [selectedId, setSelectedId] = useRecoilState(editPostIdState);
   const router = useRouter();
   const [modalActiveEditPost, setModalActiveEditPost] =
     useRecoilState(editPostState);
   const [desc, setDesc] = useState('');
-  const id = Math.floor(Math.random() * 10000) + 1;
+
+  const onPostEditActivate = (id: number) => {
+    setSelectedId(id);
+    
+    setModalActiveEditPost(true);
+  };
+
 
   const onPostDeleteActivate = (id: number) => {
     onPostDelete(id);
   };
-
-
+  const handleCancel = () => {
+    setModalActiveEditPost(false);
+    // return route.push('/posts');
+  };
+  // console.log(selectedId);
   const renderedFeed = posts.map((post) => {
     return (
       <>
         <div>
+          <Modal
+            title='Edit Post'
+            visible={modalActiveEditPost}
+            footer={null}
+            onCancel={handleCancel}
+          >
+            <FormEditPost post={post} />
+          </Modal>
           <Card
             key={post.id}
             title={
-              <p className='text-xs text-gray-500'>updated on {new Date(post.updated).toLocaleDateString("us-TH", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    })
-    .toString()}</p>
+              <p className='text-xs text-gray-500'>
+                updated on{' '}
+                {new Date(post.updated)
+                  .toLocaleDateString('us-TH', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                  })
+                  .toString()}
+              </p>
             }
             hoverable
             style={{ width: 600 }}
@@ -71,15 +89,15 @@ const CardPost: React.FC<CardPostProps> = ({ posts, onPostDelete }) => {
             extra={
               post.user.username === userInfo.username ? (
                 [
-                  <Link shallow={true} href='/posts/desc'>
-                    <EditOutlined
-                      key='editPost'
-                      onClick={() => {
-                        setModalActiveEditPost(true);
-                      }}
-                      className='pr-3'
-                    />
-                  </Link>,
+                  // <Link shallow={true} href='/posts/desc'>
+                  <EditOutlined
+                    key='editPost'
+                    onClick={() => {
+                      onPostEditActivate(post.id);
+                    }}
+                    className='pr-3'
+                  />,
+                  // </Link>,
                   <DeleteOutlined
                     key='deletePost'
                     onClick={() => onPostDeleteActivate(post.id)}

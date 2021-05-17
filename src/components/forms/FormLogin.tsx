@@ -12,10 +12,8 @@ const { Text } = Typography;
 interface FormLoginProps {
   pageType: string;
 }
-// const cookieCutter = require('cookie-cutter');
 
 import Cookies from 'js-cookie';
-// import getCookies from '../../lib/utils/cookies';
 
 const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);

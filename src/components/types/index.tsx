@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Post {
   id: number;
   image: string;
@@ -9,4 +11,8 @@ export interface Post {
     id: number;
     username: string;
   };
+}
+
+export interface MainLayoutProps {
+  children: JSX.Element & ReactNode;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Image, Typography, Modal } from 'antd';
+import { Form, Input, Button, Modal } from 'antd';
 import { useRecoilState } from 'recoil';
 import { Upload } from 'antd';
 import Link from 'next/link';

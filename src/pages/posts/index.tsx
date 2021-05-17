@@ -11,16 +11,14 @@ import {
 import CardPost from '@/components/cards/CardPost';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
-// import Cookies from 'cookies';
 import { Axios } from '../api/daytechbackend';
 import { useRouter } from 'next/router';
-// const Cookies = require('cookies');
 import getCookies from '../../lib/utils/cookies';
 import decryptToken from '../../lib/utils/decryptToken';
 
 interface postsProps {
   decryptJwt: { username: string; iat: number; exp: number };
-  jwt: any;
+  jwt: string;
   feeds: any;
 }
 
@@ -31,6 +29,7 @@ const posts: React.FC<postsProps> = ({ decryptJwt, jwt, feeds }) => {
     setPosts(feeds);
     setUserToken(true);
   }, [feeds]);
+
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
   const [userToken, setUserToken] = useRecoilState(userLoginState);
 
@@ -50,6 +49,32 @@ const posts: React.FC<postsProps> = ({ decryptJwt, jwt, feeds }) => {
       // set posts
     } catch (error) {
       message.error('Unable to delete a post');
+    }
+  };
+
+  const onPostEdit = async (id: number, text: string) => {
+    try {
+      const params = new URLSearchParams();
+      params.append('text', text);
+      await Axios.patch(`/posts/${id}/text`, params, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      // get posts
+      const { data } = await Axios.get('/posts', {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      // set posts
+      const temp: any = posts.filter((post: any) => post.id !== id);
+      setPosts(temp);
+      // setPosts(data)
+    } catch (error) {
+      message.error('Unable to edit a post');
     }
   };
 
@@ -78,8 +103,11 @@ const posts: React.FC<postsProps> = ({ decryptJwt, jwt, feeds }) => {
       </div>
       <div className='flex flex-wrap justify-center'>
         <div className='flex-row'>
-          {/* <CardPost onMessagePost={onMessagePost}/> */}
-          <CardPost posts={posts} onPostDelete={onPostDelete} />
+          <CardPost
+            posts={posts}
+            onPostDelete={onPostDelete}
+            onPostEdit={onPostEdit}
+          />
         </div>
       </div>
     </>
@@ -93,7 +121,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const reqCookie: string | undefined = req.headers.cookie;
   const jwt: string = await getCookies('jwt', reqCookie);
   const decryptJwt: string | object = await decryptToken(jwt);
-  // console.log('decryptJwt', decryptJwt);
   // if not found cookie, just redirect to sign in page
   if (!jwt) {
     res.writeHead(302, { Location: '/signin' }); //302 is a just code to redirect

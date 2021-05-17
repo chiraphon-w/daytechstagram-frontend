@@ -41,7 +41,7 @@ const desc = () => {
           </div>
         </div>
       </div>
-      <FormEditPost />
+      {/* <FormEditPost /> */}
     </div>
   );
 };

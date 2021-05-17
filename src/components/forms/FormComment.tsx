@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Image, Typography, Modal } from 'antd';
+import { Form, Input, Button, Image } from 'antd';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { createPostState } from '../recoil/atom';
