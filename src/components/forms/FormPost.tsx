@@ -10,10 +10,16 @@ import Link from 'next/link';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import CardPost from '@/components/cards/CardPost';
+import { Post } from '../types';
 
 const { TextArea } = Input;
-interface Props {}
-const FormPost = ({}) => {
+
+interface FormPostProps {
+  // posts: Post[];
+  onMessagePost: (desc: string, file:any) => Promise<void>;
+}
+
+const FormPost:React.FC<FormPostProps> = ({onMessagePost}) => {
 
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
   const route = useRouter();
@@ -22,10 +28,13 @@ const FormPost = ({}) => {
     wrapperCol: { span: 24 },
   };
 
-  //   router.push("/posts", null, { shallow: true });
+  const [desc, setDesc] = useState('')
+
 
   const onFinish = (values: { descPost: string; fileList: any }) => {
     console.log('Success:', values);
+    onMessagePost(values.descPost, values.fileList.file.originFileObj)
+    setDesc('')
     setModalActivePost(false);
     return route.push('/posts');
   };
@@ -37,9 +46,9 @@ const FormPost = ({}) => {
 
   return (
     <>
-      <div className='flex justify-center'>
+      {/* <div className='flex justify-center'>
         <CardPost />
-      </div>
+      </div> */}
       <Modal
         title='Create Post'
         visible={modalActivePost}
@@ -59,6 +68,7 @@ const FormPost = ({}) => {
             <TextArea
               placeholder="What's happening?"
               autoSize
+              onChange={ e => setDesc(e.target.value) }
               className='my-2'
             />
           </Form.Item>

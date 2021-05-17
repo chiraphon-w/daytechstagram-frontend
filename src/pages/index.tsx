@@ -1,13 +1,3 @@
-import {
-  Button,
-  DatePicker,
-  Typography,
-  version,
-  Layout,
-  Menu,
-  Breadcrumb,
-} from 'antd';
-
 import Head from 'next/head';
 
 

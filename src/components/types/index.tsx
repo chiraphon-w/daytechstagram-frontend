@@ -5,4 +5,8 @@ export interface Post {
   created: string;
   updated: string;
   userId: number;
+  user: {
+    id: number;
+    username: string;
+  };
 }

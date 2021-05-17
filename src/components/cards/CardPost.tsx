@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Image, Typography, Card } from 'antd';
+import { Form, Input, Button, Image, Avatar, Card } from 'antd';
 import {
   EditOutlined,
   DeleteOutlined,
@@ -19,21 +19,29 @@ const { Meta } = Card;
 interface CardPostProps {
   posts: Post[];
   // onPostEdit: (id: number, text: string) => void;
-  // onPostDelete: (id: number) => void;
+  onPostDelete: (id: number) => void;
 }
 
-const CardPost: React.FC<CardPostProps> = ({ posts }) => {
+const CardPost: React.FC<CardPostProps> = ({ posts, onPostDelete }) => {
   const router = useRouter();
   const [modalActiveEditPost, setModalActiveEditPost] =
     useRecoilState(editPostState);
   const [desc, setDesc] = useState('');
+  const id = Math.floor(Math.random() * 10000) + 1;
+
+  const onPostDeleteActivate = (id: number) => {
+    onPostDelete(id);
+  };
 
   const renderedFeed = posts.map((post) => {
     return (
       <>
-        <div key={post.id}>
+        <div>
           <Card
-            title={<p className='text-xs text-gray-500'>updated on {post.updated}</p>}
+            key={post.id}
+            title={
+              <p className='text-xs text-gray-500'>updated on {post.updated}</p>
+            }
             hoverable
             style={{ width: 600 }}
             className='my-4'
@@ -47,22 +55,23 @@ const CardPost: React.FC<CardPostProps> = ({ posts }) => {
                   className='pr-3'
                 />
               </Link>,
-
               <DeleteOutlined
                 key='deletePost'
-                onClick={() => {
-                  alert('deletePost');
-                }}
+                onClick={() => onPostDeleteActivate(post.id)}
               />,
             ]}
             cover={
-              <img
-                alt='example'
-                src={post.image}
-              />
+              <img alt='example' src={`http://localhost:3000/${post.image}`} />
             }
           >
-            <Meta className='pb-3' title={post.userId} />
+            <Meta
+              className='pb-3'
+              title={post.user.username}
+              avatar={
+                <Avatar src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png' />
+              }
+            />
+
             <p className='text-gray-500'>{post.desc}</p>
             <CardComment />
             <FormComment />

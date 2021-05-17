@@ -6,17 +6,20 @@ import router, { useRouter } from 'next/router';
 import axios from 'axios';
 import { authAxios } from 'src/pages/api/daytechbackend';
 import { useRecoilState } from 'recoil';
-import { errorState, userLoginState } from '../recoil/atom';
+import { userLoginState } from '../recoil/atom';
 
 const { Text } = Typography;
 interface FormLoginProps {
   pageType: string;
 }
-const cookieCutter = require('cookie-cutter');
+// const cookieCutter = require('cookie-cutter');
+
+import Cookies from 'js-cookie';
+// import getCookies from '../../lib/utils/cookies';
 
 const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
-  const [errorCode, setErrorCode] = useRecoilState(errorState);
+  // const [errorCode, setErrorCode] = useRecoilState(errorState);
 
   const route = useRouter();
   const [form] = Form.useForm();
@@ -44,14 +47,15 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
           );
         }
       }
-    } else { //signin
+    } else {
+      //signin
       try {
         const params = new URLSearchParams();
         params.append('username', values.username);
         params.append('password', values.password);
 
         const { data } = await authAxios.post('/users/signin', params);
-        cookieCutter.set('jwt', data.token);
+        Cookies.set('jwt', data.token);
         setUserToken(true);
         return router.push('/posts');
       } catch (e) {
@@ -64,85 +68,84 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
     }
 
     console.log('Success:', values);
-    if (errorCode === 0) {
-      if (pageType === 'signin') {
-      } else {
-        return route.push('/signin');
-      }
+
+    if (pageType === 'signin') {
+    } else {
+      return route.push('/signin');
     }
   };
 
   return (
     <>
-        <div className='text-gray-500 text-lg text-center p-10 pr-10'>
-          {pageType === 'signin' ? 'Sign In' : 'Sign Up'}
-        </div>
+      <div className='text-gray-500 text-lg text-center p-10 pr-10'>
+        {pageType === 'signin' ? 'Sign In' : 'Sign Up'}
+      </div>
 
-        <Form
-          {...tailLayout}
-          form={form}
-          name='normal_login'
-          className='login-form'
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
+      <Form
+        {...tailLayout}
+        form={form}
+        name='normal_login'
+        className='login-form'
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+      >
+        <Form.Item
+          name='username'
+          rules={[{ required: true, message: 'Please input your Username!' }]}
         >
-          <Form.Item
-            name='username'
-            rules={[{ required: true, message: 'Please input your Username!' }]}
-          >
-            <Input
-              prefix={<UserOutlined className='site-form-item-icon' />}
-              placeholder='Username'
-            />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: '0px' }}
-            name='password'
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password
-              placeholder='Password'
-              prefix={<LockOutlined className='site-form-item-icon' />}
-            />
-          </Form.Item>
-          <Form.Item style={{ marginTop: '0px' }}>
-            {pageType === 'signup' ? (
-              <Text type='secondary'>
-                Use at least 4 characters including a number, a lowercase and a
-                uppercase letter
-              </Text>
-            ) : (
-              <></>
-            )}
-          </Form.Item>
+          <Input
+            prefix={<UserOutlined className='site-form-item-icon' />}
+            placeholder='Username'
+          />
+        </Form.Item>
+        <Form.Item
+          style={{ marginBottom: '0px' }}
+          name='password'
+          rules={[{ required: true, message: 'Please input your password!' }]}
+        >
+          <Input.Password
+            placeholder='Password'
+            prefix={<LockOutlined className='site-form-item-icon' />}
+          />
+        </Form.Item>
+        <Form.Item style={{ marginTop: '0px' }}>
+          {pageType === 'signup' ? (
+            <Text type='secondary'>
+              Use at least 4 characters including a number, a lowercase and a
+              uppercase letter
+            </Text>
+          ) : (
+            <></>
+          )}
+        </Form.Item>
 
-          <Form.Item>
-            <div className='flex flex-row'>
-              <Button
-                type='primary'
-                htmlType='submit'
-                className='login-form-button'
-              >
-                {pageType === 'signin' ? 'Login' : 'SignUp'}
-              </Button>
-              <div className='pl-5 pt-1'>
-                {pageType === 'signin' ? (
-                  <>
-                    <Link shallow={true} href='/signup'>
-                      Don't have an account yet?
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link shallow={true} href='/signin'>
-                      Already have an account?
-                    </Link>
-                  </>
-                )}
-              </div>
+        <Form.Item>
+          <div className='flex flex-row'>
+            <Button
+              type='primary'
+              htmlType='submit'
+              className='login-form-button'
+            >
+              {pageType === 'signin' ? 'Login' : 'SignUp'}
+            </Button>
+            <div className='pl-5 pt-1'>
+              {pageType === 'signin' ? (
+                <>
+                  <Link shallow={true} href='/signup'>
+                    Don't have an account yet?
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link shallow={true} href='/signin'>
+                    Already have an account?
+                  </Link>
+                </>
+              )}
             </div>
-          </Form.Item>
-        </Form>
+          </div>
+        </Form.Item>
+      </Form>
     </>
   );
 };

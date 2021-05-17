@@ -3,21 +3,26 @@ import Link from 'next/link';
 import { ReactNode, useState } from 'react';
 import { Disclosure, Transition } from '@headlessui/react';
 import { useRecoilState } from 'recoil';
-import { userLoginState, userLogoutState } from '../recoil/atom';
+import { userLoginState } from '../recoil/atom';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 interface MainLayoutProps {
   children: JSX.Element & ReactNode;
 }
-const cookieCutter = require('cookie-cutter');
+// const cookieCutter = require('cookie-cutter');
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
   const route = useRouter();
 
+  if (route.asPath === '/posts') setUserToken(true);
+  else if (route.asPath === '/signin') setUserToken(false);
+  
   const handleLogout = () => {
-    cookieCutter.set('jwt', '', { expires: new Date(0) });
+    Cookies.remove('jwt');
     setUserToken(false);
     return route.push('/signin');
   };
@@ -45,7 +50,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                           mode='horizontal'
                           defaultSelectedKeys={['1']}
                         >
-                          <Menu.Item key='3'>
+                          <Menu.Item key='1'>
                             <Button type='link'>
                               <Link shallow={true} href='/signin'>
                                 Home
@@ -59,14 +64,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                           mode='horizontal'
                           defaultSelectedKeys={['2']}
                         >
-                          <Menu.Item key='1'>
+                          <Menu.Item key='2'>
                             <Button type='link'>
                               <Link shallow={true} href='/posts'>
                                 Home
                               </Link>
                             </Button>
                           </Menu.Item>
-                          <Menu.Item key='2'>
+                          <Menu.Item key='3'>
                             <Button type='link' onClick={handleLogout}>
                               Logout
                             </Button>

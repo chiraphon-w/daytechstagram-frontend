@@ -35,9 +35,9 @@ const FormEditPost = () => {
   };
   return (
     <>
-      <div className='flex justify-center'>
+      {/* <div className='flex justify-center'>
         <CardPost />
-      </div>
+      </div> */}
       <Modal
         title='Edit Post'
         visible={modalActiveEditPost}

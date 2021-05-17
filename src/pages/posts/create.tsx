@@ -1,32 +1,37 @@
-import {
-  Button,
-  message
-} from 'antd';
+import { Button, message } from 'antd';
 import React, { useState } from 'react';
 import Head from 'next/head';
 import FormPost from '@/components/forms/FormPost';
 import Home from '../index';
 import { useRecoilState } from 'recoil';
-import { createPostState } from '@/components/recoil/atom';
+import { createPostState, postsState } from '@/components/recoil/atom';
 import { Axios } from '../api/daytechbackend';
 import { Post } from '@/components/types';
 import { GetServerSideProps } from 'next';
-const Cookies = require('cookies');
+import Cookies from 'js-cookie';
+import getCookies from '../../lib/utils/cookies';
 
 interface createProps {
-  jwt: string;
-  feeds: Post[];
+  jwt: any;
+  // feeds: Post[];
 }
 
-const create:React.FC<createProps> = ({ jwt, feeds }) => {
+const create: React.FC<createProps> = ({}) => {
+  const jwt = Cookies.get('jwt');
+  console.log('jwt', jwt);
+
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
-  const [posts, setPosts] = useState<Post[]>(feeds);
-  const onMessagePost = async (desc: string) => {
+  const [posts, setPosts] = useRecoilState(postsState);
+
+  const onMessagePost = async (desc: string, file: any) => {
     try {
       // create a post
+      console.log('file', file);
       const formdatas = new FormData();
       formdatas.append('desc', desc);
-      await Axios.post('/posts', formdatas, {
+      formdatas.append('image', file);
+
+      const newData = await Axios.post('/posts', formdatas, {
         headers: {
           Authorization: `Bearer ${jwt}`,
           'Content-Type': 'multipart/form-data',
@@ -34,14 +39,7 @@ const create:React.FC<createProps> = ({ jwt, feeds }) => {
       });
       message.success('Successfully create a post');
 
-      // get posts
-      const { data } = await Axios.get('/posts', {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      // set posts
-      setPosts(data);
+      console.log('newData', newData.data);
     } catch (error) {
       message.error('Unable to create post');
     }
@@ -64,32 +62,25 @@ const create:React.FC<createProps> = ({ jwt, feeds }) => {
           </div>
         </div>
       </div>
-      <FormPost />
+      <FormPost onMessagePost={onMessagePost} />
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  // Create a cookies instance
-  const cookies = new Cookies(req, res);
-  const jwt = cookies.get('jwt');
+  // console.log('req', req.headers.cookie);
+  const reqCookie: any = req.headers.cookie;
+  const jwt: any = await getCookies('jwt', reqCookie);
 
-  // if not found cookie, just redirect to sign in page
   if (!jwt) {
     res.writeHead(302, { Location: '/signin' }); //302 is a just code to redirect
     res.end();
   }
 
-  const { data } = await Axios.get('/posts', {
-    headers: {
-      Authorization: `Bearer ${jwt}`,
-    },
-  });
 
   return {
     props: {
-      jwt,
-      feeds: data,
+      status: true,
     },
   };
 };
