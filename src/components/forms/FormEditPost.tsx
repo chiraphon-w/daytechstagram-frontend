@@ -13,11 +13,12 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import CardPost from '@/components/cards/CardPost';
 import { Post } from '../types';
+import { updatePost } from 'src/lib/api/postApi';
 
 const { TextArea } = Input;
 interface Props {}
 
-const FormEditPost = ({ post }: any) => {
+const FormEditPost = ({ feed, jwt }: any) => {
   const [modalActiveEditPost, setModalActiveEditPost] =
     useRecoilState(editPostState);
   const [posts, setPosts] = useRecoilState(postsState);
@@ -32,28 +33,20 @@ const FormEditPost = ({ post }: any) => {
   // console.log('FormEditPost');
   //   router.push("/posts", null, { shallow: true });
 
-  const onFinish = (values: { descPost: string }) => {
-    console.log('Success:', values);
-    setModalActiveEditPost(false);
-    return route.push('/posts');
+  const onFinish = async (values: any) => {
+    // console.log('Success:', values);
+    // const formdatas: FormData = new FormData();
+    // formdatas.append('desc', values.editDesc);
+    const { data }: any = await updatePost(values, feed.id, jwt);
+    // return route.push('/posts');
   };
 
-
-  // const handleCancel = () => {
-  //   setModalActiveEditPost(false);
-  //   return route.push('/posts');
-  // };
   return (
     <>
       {/* <div className='flex justify-center'>
         <CardPost />
       </div> */}
-      {/* <Modal
-        title='Edit Post'
-        visible={modalActiveEditPost}
-        footer={null}
-        onCancel={handleCancel}
-      > */}
+
       <Form
         {...layout}
         name='formEditPost'
@@ -61,14 +54,14 @@ const FormEditPost = ({ post }: any) => {
         onFinish={onFinish}
       >
         <Form.Item
-          name='editDesc'
+          name='desc'
           rules={[{ required: true, message: 'Please Enter Descripton' }]}
         >
           <TextArea
             placeholder="What's happening?"
             autoSize
             className='my-2'
-            defaultValue=''
+            defaultValue={feed.desc}
           />
         </Form.Item>
         <Form.Item>
@@ -79,7 +72,6 @@ const FormEditPost = ({ post }: any) => {
           </div>
         </Form.Item>
       </Form>
-      {/* </Modal> */}
     </>
   );
 };

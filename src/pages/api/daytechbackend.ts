@@ -10,10 +10,3 @@ export const authAxios = axios.create({
 export const Axios = axios.create({
   baseURL: 'http://localhost:3000',
 })
-
-// export const postAxios = axios.create({
-//   baseURL: 'http://localhost:3000',
-//   headers: {
-//     'Authorization': `Bearer ${token}`,
-//   },
-// });

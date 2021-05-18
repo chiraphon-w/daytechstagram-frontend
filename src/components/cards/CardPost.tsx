@@ -33,18 +33,19 @@ const CardPost: React.FC<CardPostProps> = ({
 
   const [userInfo, setUserInfo] = useState<any>({});
   // const [selectedId, setSelectedId] = useState(0);
-  const [selectedId, setSelectedId] = useRecoilState(editPostIdState);
+  const [selectedId, setSelectedId] = useState(0);
   const router = useRouter();
   const [modalActiveEditPost, setModalActiveEditPost] =
     useRecoilState(editPostState);
   const [desc, setDesc] = useState('');
+  const route = useRouter();
 
   const onPostEditActivate = (id: number) => {
     setSelectedId(id);
-    
-    setModalActiveEditPost(true);
-  };
 
+    setModalActiveEditPost(true);
+    return route.push(`/posts/${id}/desc`);
+  };
 
   const onPostDeleteActivate = (id: number) => {
     onPostDelete(id);
@@ -58,14 +59,6 @@ const CardPost: React.FC<CardPostProps> = ({
     return (
       <>
         <div>
-          <Modal
-            title='Edit Post'
-            visible={modalActiveEditPost}
-            footer={null}
-            onCancel={handleCancel}
-          >
-            <FormEditPost post={post} />
-          </Modal>
           <Card
             key={post.id}
             title={
@@ -89,7 +82,6 @@ const CardPost: React.FC<CardPostProps> = ({
             extra={
               post.user.username === userInfo.username ? (
                 [
-                  // <Link shallow={true} href='/posts/desc'>
                   <EditOutlined
                     key='editPost'
                     onClick={() => {
@@ -97,7 +89,6 @@ const CardPost: React.FC<CardPostProps> = ({
                     }}
                     className='pr-3'
                   />,
-                  // </Link>,
                   <DeleteOutlined
                     key='deletePost'
                     onClick={() => onPostDeleteActivate(post.id)}
