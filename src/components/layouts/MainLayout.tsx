@@ -1,7 +1,6 @@
-import { Button, Typography, Layout, Menu } from 'antd';
+import { Button, Layout, Menu } from 'antd';
 import Link from 'next/link';
-import { ReactNode, useState } from 'react';
-import { Disclosure, Transition } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import { useRecoilState } from 'recoil';
 import { userLoginState } from '../recoil/atom';
 import { useRouter } from 'next/router';
@@ -13,9 +12,6 @@ const { Footer } = Layout;
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [userToken, setUserToken] = useRecoilState(userLoginState);
   const route = useRouter();
-
-  // if (route.asPath === '/posts') setUserToken(true);
-  // else if (route.asPath === '/signin') setUserToken(false);
 
   const handleLogout = () => {
     Cookies.remove('jwt');

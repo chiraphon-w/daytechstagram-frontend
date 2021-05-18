@@ -15,20 +15,17 @@ const { Meta } = Card;
 
 interface CardPostProps {
   posts: Post[];
-  onPostEdit: (id: number, text: string) => void;
   onPostDelete: (id: number) => void;
 }
 
 const CardPost: React.FC<CardPostProps> = ({
   posts,
   onPostDelete,
-  onPostEdit,
 }) => {
   useEffect(() => {
     const jwt: any = Cookies.get('jwt');
     const decryptJwt = decryptToken(jwt);
     setUserInfo(decryptJwt);
-    console.log('decryptJwt ', decryptJwt);
   }, []);
 
   const [userInfo, setUserInfo] = useState<any>({});
@@ -50,11 +47,7 @@ const CardPost: React.FC<CardPostProps> = ({
   const onPostDeleteActivate = (id: number) => {
     onPostDelete(id);
   };
-  const handleCancel = () => {
-    setModalActiveEditPost(false);
-    // return route.push('/posts');
-  };
-  // console.log(selectedId);
+
   const renderedFeed = posts.map((post) => {
     return (
       <>

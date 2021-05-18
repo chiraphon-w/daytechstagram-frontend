@@ -19,6 +19,8 @@ import { getPostById } from 'src/lib/api/postApi';
 import { ParsedUrlQuery } from 'querystring';
 import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequestCookies } from 'next/dist/next-server/server/api-utils';
+import { route } from 'next/dist/next-server/server/router';
+import { useRouter } from 'next/router';
 
 interface serverSideProps {
   req: IncomingMessage & {
@@ -29,12 +31,17 @@ interface serverSideProps {
 }
 
 const desc = ({ feed, jwt }: any) => {
+  const route = useRouter();
   const [modalActiveEditPost, setModalActiveEditPost] =
     useRecoilState(editPostState);
   const [userToken, setUserToken] = useRecoilState(userLoginState);
   useEffect(() => {
     setUserToken(true);
   }, []);
+
+  const handleCancel = () => {
+    return route.push('/posts');
+  };
 
   return (
     <div>
@@ -43,19 +50,9 @@ const desc = ({ feed, jwt }: any) => {
       </Head>
       <div className='pt-5'>
         <div className='w-full max-w-4xl mx-auto p-5 text-center'>
-          <div className='flex flex-row-reverse space-x-4 space-x-reverse'>
-            <Button
-              onClick={() => {
-                setModalActiveEditPost(true);
-              }}
-              type='dashed'
-            >
-              New Post
-            </Button>
-          </div>
+          <FormEditPost feed={feed} jwt={jwt} />
         </div>
       </div>
-      <FormEditPost feed={feed} jwt={jwt} />
     </div>
   );
 };
@@ -70,7 +67,6 @@ export const getServerSideProps = async ({
   const decryptJwt: string | object = await decryptToken(jwt);
   let postId: string | string[] | undefined;
   if (!!params) postId = params.id;
-  console.log('postId ', postId);
 
   if (!jwt) {
     res.writeHead(302, { Location: '/signin' }); //302 is a just code to redirect
@@ -78,11 +74,6 @@ export const getServerSideProps = async ({
   }
 
   const { data }: any = await getPostById(postId, jwt);
-  // const { data } = await Axios.get('/posts', {
-  //   headers: {
-  //     Authorization: `Bearer ${jwt}`,
-  //   },
-  // });
 
   return {
     props: {

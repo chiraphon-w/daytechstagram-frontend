@@ -44,8 +44,6 @@ const posts: React.FC<postsProps> = ({ decryptJwt, jwt, feeds }) => {
       setPosts(temp);
       message.success('Successfully delete a post');
 
-      console.log('deleteData', deleteData);
-
       // set posts
     } catch (error) {
       message.error('Unable to delete a post');
@@ -106,7 +104,6 @@ const posts: React.FC<postsProps> = ({ decryptJwt, jwt, feeds }) => {
           <CardPost
             posts={posts}
             onPostDelete={onPostDelete}
-            onPostEdit={onPostEdit}
           />
         </div>
       </div>

@@ -64,7 +64,6 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
       }
     }
 
-    console.log('Success:', values);
 
     if (pageType === 'signin') {
     } else {

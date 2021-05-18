@@ -5,7 +5,6 @@ import { useRecoilState } from 'recoil';
 import { createPostState } from '../recoil/atom';
 const { TextArea } = Input;
 
-interface Props {}
 
 const FormComment = () => {
     const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
@@ -16,8 +15,6 @@ const FormComment = () => {
     };
 
     const onFinish = (values: { desc: string }) => {
-        console.log('Success:', values);
-        // setModalActivePost(false);
         return route.push('/posts');
       };
    

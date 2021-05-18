@@ -6,10 +6,10 @@ import Home from '../index';
 import { useRecoilState } from 'recoil';
 import { createPostState, postsState } from '@/components/recoil/atom';
 import { Axios } from '../api/daytechbackend';
-import { Post } from '@/components/types';
 import { GetServerSideProps } from 'next';
 import Cookies from 'js-cookie';
 import getCookies from '../../lib/utils/cookies';
+import CardPost from '@/components/cards/CardPost';
 
 interface createProps {
   jwt: any;
@@ -18,7 +18,6 @@ interface createProps {
 
 const create: React.FC<createProps> = ({}) => {
   const jwt = Cookies.get('jwt');
-  console.log('jwt', jwt);
 
   const [modalActivePost, setModalActivePost] = useRecoilState(createPostState);
   const [posts, setPosts] = useRecoilState(postsState);
@@ -26,7 +25,6 @@ const create: React.FC<createProps> = ({}) => {
   const onMessagePost = async (desc: string, file: any) => {
     try {
       // create a post
-      console.log('file', file);
       const formdatas = new FormData();
       formdatas.append('desc', desc);
       formdatas.append('image', file);
@@ -39,12 +37,11 @@ const create: React.FC<createProps> = ({}) => {
       });
       message.success('Successfully create a post');
 
-      console.log('newData', newData.data);
     } catch (error) {
       message.error('Unable to create post');
     }
   };
-
+  const onPostDelete = async (id: number) => {};
   return (
     <div>
       <Home />
@@ -62,13 +59,15 @@ const create: React.FC<createProps> = ({}) => {
           </div>
         </div>
       </div>
+      <div className='flex justify-center'>
+        <CardPost posts={posts} onPostDelete={onPostDelete} />
+      </div>
       <FormPost onMessagePost={onMessagePost} />
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  // console.log('req', req.headers.cookie);
   const reqCookie: any = req.headers.cookie;
   const jwt: any = await getCookies('jwt', reqCookie);
 
@@ -76,7 +75,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     res.writeHead(302, { Location: '/signin' }); //302 is a just code to redirect
     res.end();
   }
-
 
   return {
     props: {

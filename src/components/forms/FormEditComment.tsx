@@ -20,11 +20,8 @@ const FormEditComment = () => {
     labelCol: { span: 8 },
     wrapperCol: { span: 24 },
   };
-  // console.log('FormEditComment');
-  //   router.push("/posts", null, { shallow: true });
 
   const onFinish = (values: { descPost: string }) => {
-    console.log('Success:', values);
     setModalActiveEditComment(false);
     return route.push('/posts');
   };
@@ -35,9 +32,6 @@ const FormEditComment = () => {
   };
   return (
     <>
-      {/* <div className='flex justify-center'>
-        <CardPost />
-      </div> */}
       <Modal
         title='Edit Post'
         visible={modalActiveEditComment}

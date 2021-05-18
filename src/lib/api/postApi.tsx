@@ -1,10 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export const getPostById = async (
   postId: string | string[] | undefined,
   accessToken: string
 ) => {
-  // const { accessToken }: any = await getAccessToken();
   const url = process.env.API_URL + '/posts/' + postId;
 
   const config = {
@@ -14,7 +13,6 @@ export const getPostById = async (
   };
   try {
     const result = await axios.get(url, config);
-    console.log('result', result);
     return result;
   } catch (e) {
     console.log(e.response);
@@ -35,10 +33,8 @@ export const updatePost = async (
     },
   };
   try {
-    // url ที่จะยิงไป, ค่า paramiter ที่รับมา, config ที่แนบไป ex.headers
-    console.log('values', values);
-    const result = await axios.patch(url, values, config);
-    console.log('result', result);
+    // url ที่จะยิงไป, ค่า parameter ที่รับมา, config ที่แนบไป ex.headers
+    const result: AxiosResponse<any> = await axios.patch(url, values, config);
     return result;
   } catch (e) {
     console.log(e.response);

@@ -9,7 +9,6 @@ import { editCommentState } from '../recoil/atom';
 import Link from 'next/link';
 
 const { Meta } = Card;
-interface Props {}
 
 const CardComment = () => {
   const [modalActiveEditComment, setModalActiveEditComment] =
