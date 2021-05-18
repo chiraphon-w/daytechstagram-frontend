@@ -1,7 +1,6 @@
 import { Button, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Home from '../index';
 import { useRecoilState } from 'recoil';
 import {
   createPostState,
