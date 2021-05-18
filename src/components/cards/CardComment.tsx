@@ -22,7 +22,7 @@ const CardComment = () => {
           style={{ width: 550 }}
           className='my-4'
           extra={[
-            <Link shallow={true} href='/comments/desc'>
+            <Link href='/comments/desc'>
             <EditOutlined
               key='editcomment'
               onClick={() => {

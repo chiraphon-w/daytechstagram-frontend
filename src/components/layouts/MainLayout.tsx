@@ -44,7 +44,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         >
                           <Menu.Item key='1'>
                             <Button type='link'>
-                              <Link shallow={true} href='/signin'>
+                              <Link href='/signin'>
                                 Home
                               </Link>
                             </Button>
@@ -58,7 +58,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         >
                           <Menu.Item key='2'>
                             <Button type='link'>
-                              <Link shallow={true} href='/posts'>
+                              <Link href='/posts'>
                                 Home
                               </Link>
                             </Button>

@@ -50,32 +50,6 @@ const posts: React.FC<postsProps> = ({ decryptJwt, jwt, feeds }) => {
     }
   };
 
-  const onPostEdit = async (id: number, text: string) => {
-    try {
-      const params = new URLSearchParams();
-      params.append('text', text);
-      await Axios.patch(`/posts/${id}/text`, params, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
-      // get posts
-      const { data } = await Axios.get('/posts', {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      // set posts
-      const temp: any = posts.filter((post: any) => post.id !== id);
-      setPosts(temp);
-      // setPosts(data)
-    } catch (error) {
-      message.error('Unable to edit a post');
-    }
-  };
-
   return (
     <>
       <div>

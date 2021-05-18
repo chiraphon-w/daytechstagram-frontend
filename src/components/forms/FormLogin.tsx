@@ -127,13 +127,13 @@ const FormLogin: React.FC<FormLoginProps> = ({ pageType }) => {
             <div className='pl-5 pt-1'>
               {pageType === 'signin' ? (
                 <>
-                  <Link shallow={true} href='/signup'>
+                  <Link href='/signup'>
                     Don't have an account yet?
                   </Link>
                 </>
               ) : (
                 <>
-                  <Link shallow={true} href='/signin'>
+                  <Link href='/signin'>
                     Already have an account?
                   </Link>
                 </>
